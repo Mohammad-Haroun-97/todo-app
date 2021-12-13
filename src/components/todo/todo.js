@@ -1,90 +1,107 @@
-import React, { useEffect, useState,useContext } from 'react';
-import useForm from '../../hooks/form.js';
-import { sittingsContext } from '../../context/settings.js';
-
-
-import Header from '../header/header';
-import Form from '../form/form';
-import List from '../list/list';
-
-
-
+import React, { useEffect, useState } from "react";
+import useForm from "../../hooks/form.js";
+import { FormGroup, Card, Elevation, Button } from "@blueprintjs/core";
+import { v4 as uuid } from "uuid";
+import List from "./list.js";
+import "./todo.css";
 const ToDo = () => {
-  const settings = useContext(sittingsContext);
-    const [list, setList] = useState([]);
-    const [incomplete, setIncomplete] = useState([]);
-    const [completedList, setCompletedList] = useState([]);
-    const [pages, setPages] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageElements, setPageElements] = useState([]);
+  const [list, setList] = useState([]);
+  const [incomplete, setIncomplete] = useState([]);
+  const { handleChange, handleSubmit } = useForm(addItem);
 
-    function addItem(item) {
-        setList([item, ...list]);
-    }
+  
+  function addItem(item) {
+    console.log(item);
+    item.id = uuid();
+    item.complete = false;
+    setList([...list, item]);
+  }
 
-    function deleteItem(id) {
-        const items = list.filter(item => item.id !== id);
-        setList(items);
-    }
+  function deleteItem(id) {
+    const items = list.filter((item) => item.id !== id);
+    setList(items);
+  }
 
-    function toggleComplete(id) {
-        list.map(item => {
-            if (item.id === id) {
-                item.complete = !item.complete;
-            }
-            return item;
-        });
-        const completedItems = list.filter(item => item.complete);
-        setCompletedList([...completedItems, ...completedList]);
-        const updatedList = list.filter(item => !item.complete);
-        setList(updatedList);
-    }
+  function toggleComplete(id) {
+    const items = list.map((item) => {
+      if (item.id == id) {
+        item.complete = !item.complete;
+      }
+      return item;
+    });
 
-    function chunk(array, chunkSize) {
-        const res = [];
-        for (let i = 0; i < array.length; i += chunkSize) {
-            const chunk = array.slice(i, i + chunkSize);
-            res.push(chunk);
-        }
-        return res;
-    }
+    setList(items);
+  }
 
-    function handleChangePage(pageNumber) {
-        setCurrentPage(pageNumber);
-    }
+  useEffect(() => {
+    let incompleteCount = list.filter((item) => !item.complete).length;
+    setIncomplete(incompleteCount);
+    document.title = `To Do List: ${incomplete}`;
+  }, [list]);
 
-    useEffect(() => {
-        let incompleteCount = list.length;
-        setIncomplete(incompleteCount);
-        document.title = `To Do List: ${incomplete}`;
-        let numberOfPages = Math.ceil(list.length / settings.NumberItemsDisplay);
-        let pagesNumber = Array.from({ length: numberOfPages }, (v, k) => k + 1);
-        setPages(pagesNumber);
-        let chunks = chunk(list, settings.NumberItemsDisplay);
-        setPageElements(chunks[currentPage - 1]);
-    }, [list, currentPage]);
+  return (
+    <>
+      <header style={{ width: "1000px", margin: "0 auto" }}>
+        <nav
+          className="bp3-navbar .modifier "
+          style={{ color: "white", backgroundColor: "#8F398F" }}
+        >
+          <h1>To Do List Manger: ({incomplete})</h1>
+        </nav>
+      </header>
+      <div className="div-flex">
+        <div className="toDo">
+          <Card interactive={true} elevation={Elevation.TWO}>
+            <form onSubmit={handleSubmit}>
+              <h2>Add To Do Item</h2>
+              <FormGroup label="To Do Item" labelFor="text-input">
+                <input
+                  class="bp3-input .modifier"
+                  onChange={handleChange}
+                  name="text"
+                  type="text"
+                  placeholder="Item Details"
+                  dir="auto"
+                />
+              </FormGroup>
 
-    return (
-        <>
-            <Header incomplete={incomplete}/>
-            <Form addItem={addItem} />
-            {pageElements?.map(item => (
+              <FormGroup label="Assigned To" labelFor="assignee">
+                <input
+                  class="bp3-input .modifier"
+                  onChange={handleChange}
+                  name="assignee"
+                  type="text"
+                  placeholder="Assignee Name"
+                  dir="auto"
+                />
+              </FormGroup>
+              <br />
+              <FormGroup label="Difficulty" labelFor="assignee">
+                <input
+                  onChange={handleChange}
+                  defaultValue={3}
+                  type="range"
+                  min={1}
+                  max={5}
+                  name="difficulty"
+                  dir="auto"
+                />
+              </FormGroup>
 
+              <br />
 
-
-                <List key={item.id} item={item} toggleComplete={toggleComplete} />
-            ))}
-            <dev id='pageNumbers'>{pages.map(pageNumber => (
-                <p style={{cursor:'pointer'}} onClick={() => handleChangePage(pageNumber)}>{pageNumber}  &nbsp;</p>
-            ))}</dev>
-            {settings.displayCompleted && <div>
-                <h3>Completed list:</h3>
-                {completedList.map(item => (
-                    <List key={item.id} item={item} toggleComplete={toggleComplete} />
-                ))}
-            </div>}
-        </>
-    );
+              <label>
+                <Button type="submit">Add Item</Button>
+              </label>
+            </form>
+          </Card>
+        </div>
+        <div>
+          <List list={list}  toggleComplete={toggleComplete}/>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default ToDo;
