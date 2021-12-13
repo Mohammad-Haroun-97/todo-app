@@ -16,6 +16,8 @@ function Settings(props) {
         setDefaultSort
     }
     useEffect(() => {
+        
+
         let stringArray = localStorage.getItem('SettingForm');
         let objectArray = JSON.parse(stringArray);
 

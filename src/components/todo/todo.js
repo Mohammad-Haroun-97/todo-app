@@ -44,7 +44,7 @@ const ToDo = () => {
       <header style={{ width: "1000px", margin: "0 auto" }}>
         <nav
           className="bp3-navbar .modifier "
-          style={{ color: "white", backgroundColor: "#8F398F" }}
+          style={{ color: "white", backgroundColor: "gray" }}
         >
           <h1>To Do List Manger: ({incomplete})</h1>
         </nav>
@@ -74,6 +74,10 @@ const ToDo = () => {
                   placeholder="Assignee Name"
                   dir="auto"
                 />
+
+
+
+
               </FormGroup>
               <br />
               <FormGroup label="Difficulty" labelFor="assignee">

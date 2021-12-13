@@ -7,10 +7,11 @@ function List(props) {
   const settings = useContext(SettingsContext)
   const [pageNumber, setPageNumber] = useState(0);
   const usersPerPage = settings.numOfItems;
-  const pagesVisited = pageNumber * usersPerPage;
+  const pagesUser = pageNumber * usersPerPage;
   const displayUsers = props.list
-    .slice(pagesVisited, pagesVisited + usersPerPage)
+    .slice(pagesUser, pagesUser + usersPerPage)
     .map((item) => {
+      
       return (
         <div key={item.id} style={{ width: "650px", margin: "15px" }}>
           <Card interactive={true} elevation={Elevation.TWO}>
