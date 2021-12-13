@@ -1,8 +1,6 @@
-
-
 import React from 'react'
 import { FormGroup, Card, Elevation, Button } from "@blueprintjs/core";
-import "../components/todo/todo.css";
+import "../todo/todo";
 function SettingForm() {
   const handleSubmit = e => {
     e.preventDefault();
