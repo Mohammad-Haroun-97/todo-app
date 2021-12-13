@@ -2,11 +2,11 @@ import React from 'react';
 import Settings from './context/settingsContext.js';
 import ToDo from './components/todo/todo.js';
 import Header from './components/header.js';
+import SettingForm from '../src/components/todo/formSittengs';
 import 'normalize.css';
 import '@blueprintjs/core/lib/css/blueprint.css'
 import '@blueprintjs/icons/lib/css/blueprint-icons.css'
 import Footer from './components/footer.js';
-import SettingForm from '../src/components/todo/SittingsForm';
 import {
   BrowserRouter as Router,
   Switch,
