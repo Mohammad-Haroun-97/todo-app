@@ -4,12 +4,12 @@ import { FormGroup, Card, Elevation, Button } from "@blueprintjs/core";
 import { v4 as uuid } from "uuid";
 import List from "./list.js";
 import "./todo.css";
+import Auth from "./Auth";
 const ToDo = () => {
   const [list, setList] = useState([]);
   const [incomplete, setIncomplete] = useState([]);
   const { handleChange, handleSubmit } = useForm(addItem);
 
-  
   function addItem(item) {
     console.log(item);
     item.id = uuid();
@@ -52,56 +52,58 @@ const ToDo = () => {
       <div className="div-flex">
         <div className="toDo">
           <Card interactive={true} elevation={Elevation.TWO}>
-            <form onSubmit={handleSubmit}>
-              <h2>Add To Do Item</h2>
-              <FormGroup label="To Do Item" labelFor="text-input">
-                <input
-                  class="bp3-input .modifier"
-                  onChange={handleChange}
-                  name="text"
-                  type="text"
-                  placeholder="Item Details"
-                  dir="auto"
-                />
-              </FormGroup>
 
-              <FormGroup label="Assigned To" labelFor="assignee">
-                <input
-                  class="bp3-input .modifier"
-                  onChange={handleChange}
-                  name="assignee"
-                  type="text"
-                  placeholder="Assignee Name"
-                  dir="auto"
-                />
+            <Auth capability="create">
+              <form onSubmit={handleSubmit}>
+                <h2>Add To Do Item</h2>
+                <FormGroup label="To Do Item" labelFor="text-input">
+                  <input
+                    class="bp3-input .modifier"
+                    onChange={handleChange}
+                    name="text"
+                    type="text"
+                    placeholder="Item Details"
+                    dir="auto"
+                  />
+                </FormGroup>
+                
 
+                <FormGroup label="Assigned To" labelFor="assignee">
+                  <input
+                    class="bp3-input .modifier"
+                    onChange={handleChange}
+                    name="assignee"
+                    type="text"
+                    placeholder="Assignee Name"
+                    dir="auto"
+                  />
+                </FormGroup>
+                <br />
+                <FormGroup label="Difficulty" labelFor="assignee">
+                  <input
+                    onChange={handleChange}
+                    defaultValue={3}
+                    type="range"
+                    min={1}
+                    max={5}
+                    name="difficulty"
+                    dir="auto"
+                  />
+                </FormGroup>
 
+                <br />
 
-
-              </FormGroup>
-              <br />
-              <FormGroup label="Difficulty" labelFor="assignee">
-                <input
-                  onChange={handleChange}
-                  defaultValue={3}
-                  type="range"
-                  min={1}
-                  max={5}
-                  name="difficulty"
-                  dir="auto"
-                />
-              </FormGroup>
-
-              <br />
-
-              <label>
-                <Button type="submit">Add Item</Button>
-              </label>
-            </form>
+                <label>
+                  <Button type="submit">Add Item</Button>
+                </label>
+              </form>
+            </Auth>
           </Card>
         </div>
         <div>
-          <List list={list}  toggleComplete={toggleComplete}/>
+          <Auth capability="read">
+            <List list={list} toggleComplete={toggleComplete} />
+          </Auth>
         </div>
       </div>
     </>
