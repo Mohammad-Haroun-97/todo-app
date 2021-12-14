@@ -1,5 +1,6 @@
 import React from 'react';
 import Settings from './context/settingsContext.js';
+import Auth from './context/authContext.js';
 import ToDo from './components/todo/todo.js';
 import Header from './components/header.js';
 import SettingForm from '../src/components/todo/FormForSetting';
@@ -12,14 +13,22 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import Login from './components/todo/Login.js';
 export default class App extends React.Component {
   render() {
     return (
+
+
+     
       <Router>
+         
+        
         <Switch>
+          <Auth>
           <Settings>
             <Route exact path="/">
               <Header />
+              <Login/>
               <ToDo />
               <Footer />
             </Route>
@@ -29,6 +38,7 @@ export default class App extends React.Component {
               <Footer />
             </Route>
           </Settings>
+          </Auth>
         </Switch>
       </Router>
     );

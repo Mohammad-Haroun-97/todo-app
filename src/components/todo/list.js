@@ -3,6 +3,7 @@ import { Button, Card, Elevation } from '@blueprintjs/core';
 import ReactPaginate from "react-paginate";
 import { SettingsContext } from "../../context/settingsContext"
 import './list.css'
+import Auth from './Auth'
 function List(props) {
   const settings = useContext(SettingsContext)
   const [pageNumber, setPageNumber] = useState(0);
@@ -23,8 +24,11 @@ function List(props) {
               <small>Difficulty: {item.difficulty}</small>
             </p>
 
+            <Auth capability='update'>
+
             <Button onClick={() => props.toggleComplete(item.id)}>
               Complete: {item.complete.toString()}</Button>
+              </Auth>
           </Card>
         </div>
       );
